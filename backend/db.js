@@ -1,7 +1,14 @@
-const oracledb = require('oracledb');
-require('dotenv').config();
+const oracledb = require("oracledb");
 
-oracledb.initOracleClient({ libDir: 'C:\\OracleSql\\instantclient\\instantclient_23_8' });
+require("dotenv").config({
+  path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
+});
+
+if (process.env.NODE_ENV !== "test") {
+  oracledb.initOracleClient({
+    libDir: "C:\\OracleSql\\instantclient\\instantclient_23_8",
+  });
+}
 
 const initConnection = async () => {
   try {
@@ -11,7 +18,7 @@ const initConnection = async () => {
       connectString: process.env.ORACLE_CONNECTION_STRING,
     });
   } catch (err) {
-    console.error('Oracle connection error:', err);
+    console.error("Oracle connection error:", err);
     process.exit(1);
   }
 };
