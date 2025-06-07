@@ -1,6 +1,6 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAction } from "@reduxjs/toolkit";
 
-import fetchDataConstants from '../constants'
+import fetchDataConstants from "../../constants";
 
 const fetchDataStart = createAction(fetchDataConstants.FETCH_DATA_START);
 const fetchDataSuccess = createAction(fetchDataConstants.FETCH_DATA_SUCCESS);
@@ -10,6 +10,6 @@ const fetchDataActions = {
   fetchDataStart,
   fetchDataSuccess,
   fetchDataFailure,
-}
+};
 
 export default fetchDataActions;

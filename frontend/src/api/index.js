@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: "http://localhost:5000/api",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -11,4 +11,8 @@ const fetchTableData = (table, params) => {
   return api.post(`/${table}`, params);
 };
 
-export default fetchTableData;
+const loginRequest = (credentials) => {
+  return api.post("/auth/login", credentials);
+};
+
+export { fetchTableData, loginRequest };
