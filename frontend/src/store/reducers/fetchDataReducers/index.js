@@ -1,5 +1,5 @@
-import { createReducer } from '@reduxjs/toolkit';
-import fetchDataActions from '../actions/fetchDataActions';
+import { createReducer } from "@reduxjs/toolkit";
+import fetchDataActions from "../../actions/fetchData/fetchDataActions";
 
 const initialState = {
   loading: false,
@@ -10,8 +10,8 @@ const initialState = {
 const fetchDataReducers = createReducer(initialState, (builder) => {
   builder
     .addCase(fetchDataActions.fetchDataStart, (state) => {
-        state.loading = true;
-        state.error = null;
+      state.loading = true;
+      state.error = null;
     })
     .addCase(fetchDataActions.fetchDataSuccess, (state, action) => {
       state.loading = false;
@@ -19,7 +19,7 @@ const fetchDataReducers = createReducer(initialState, (builder) => {
     })
     .addCase(fetchDataActions.fetchDataFailure, (state, action) => {
       state.loading = false;
-      state.error = action.payload || 'error';
+      state.error = action.payload || "error";
     });
 });
 
