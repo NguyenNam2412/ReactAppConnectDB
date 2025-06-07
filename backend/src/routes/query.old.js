@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const oracledb = require('oracledb');
-const initConnection = require('../db');
+const initConnection = require('../../db');
 
 const allowedTables = [
   "SFIS1.C_BOM_KEYPART_T",
@@ -112,42 +112,66 @@ router.post('/:table', async (req, res) => {
     orderClause = `ORDER BY ${orders.join(', ')}`;
   }
 
-  const limit = parseInt(query.limit);
+  const limit = parseInt(query.limit) || 10;
   const offset = parseInt(query.offset) || 0;
-  const useLimit = !isNaN(limit);
+  // const useLimit = !isNaN(limit);
 
-  let sql;
-  if (useLimit) {
-    const limitBind = `b${bindIndex++}`;
-    const offsetBind = `b${bindIndex++}`;
-    sql = `
-      SELECT * FROM (
-        SELECT a.*, ROWNUM rnum FROM (
-          SELECT * FROM ${table}
-          ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
-          ${orderClause}
-        ) a
-        WHERE ROWNUM <= :${limitBind}
-      )
-      WHERE rnum > :${offsetBind}
-    `;
-    binds[limitBind] = { val: offset + limit, type: oracledb.NUMBER, dir: oracledb.BIND_IN };
-    binds[offsetBind] = { val: offset, type: oracledb.NUMBER, dir: oracledb.BIND_IN };
-  } else {
-    sql = `
-      SELECT * FROM ${table}
-      ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
-      ${orderClause}
-    `;
-  }
+  // let sql;
+  // if (useLimit) {
+  //   const limitBind = `b${bindIndex++}`;
+  //   const offsetBind = `b${bindIndex++}`;
+  //   sql = `
+  //     SELECT * FROM (
+  //       SELECT a.*, ROWNUM rnum FROM (
+  //         SELECT * FROM ${table}
+  //         ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
+  //         ${orderClause}
+  //       ) a
+  //       WHERE ROWNUM <= :${limitBind}
+  //     )
+  //     WHERE rnum > :${offsetBind}
+  //   `;
+  //   binds[limitBind] = { val: offset + limit, type: oracledb.NUMBER, dir: oracledb.BIND_IN };
+  //   binds[offsetBind] = { val: offset, type: oracledb.NUMBER, dir: oracledb.BIND_IN };
+  // } else {
+  //   sql = `
+  //     SELECT * FROM ${table}
+  //     ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
+  //     ${orderClause}
+  //   `;
+  // }
+
+  const sql = `
+    SELECT *
+    FROM ${table}
+    ${where.length ? "WHERE " + where.join(" AND ") : ""}
+    ${orderClause}
+    OFFSET :offsetRow ROWS FETCH NEXT :maxRow ROWS ONLY
+  `;
+
+  binds.maxRow = limit;
+  binds.offsetRow = offset;
 
   console.log('sql', sql)
 
   try {
     const conn = await initConnection();
-    const result = await conn.execute(sql, binds, { outFormat: oracledb.OUT_FORMAT_OBJECT });
-    res.json(result.rows);
+    const result = await conn.execute(sql, binds, { 
+      outFormat: oracledb.OUT_FORMAT_OBJECT 
+    });
+
     await conn.close();
+
+    res.json({ 
+      success: true,
+      data: result.rows, 
+      meta: {
+        limit,
+        offset,
+        count: result.rows.length,
+      }, 
+    });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Query error', details: err.message });
