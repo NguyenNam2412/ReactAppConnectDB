@@ -9,10 +9,9 @@ function LoginPage() {
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const data = useSelector(authLogin.selectAuth)
+  const loginSession = useSelector(authLogin.selectAuthSession)
   const loading = useSelector(authLogin.selectAuthLoading);
   const error = useSelector(authLogin.selectAuthLoading);
-  const LoginSuccess = useSelector(authLogin.selectUser);
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -28,11 +27,11 @@ function LoginPage() {
   };
 
   useEffect(() => {
-    if (!!LoginSuccess) {
-      localStorage.setItem("token", data.token);
+    if (loginSession?.success) {
+      localStorage.setItem("token", loginSession.token);
       navigate("/");
     }
-  }, [LoginSuccess, data, navigate])
+  }, [loginSession, navigate])
 
   return (
     <div className="login-container">

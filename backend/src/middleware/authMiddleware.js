@@ -16,6 +16,9 @@ function authenticateToken(req, res, next) {
     req.user = decoded; // lưu user vào req
     next(); // tiếp tục sang route
   } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return res.status(401).json({ success: false, error: "Token expired" });
+    }
     return res.status(403).json({ success: false, error: "Invalid token" });
   }
 }

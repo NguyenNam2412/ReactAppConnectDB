@@ -1,8 +1,8 @@
 const selectAuth = (state) => {
   return state.auth
 };
-const selectUser = (state) => {
-  return state.auth.user
+const selectAuthSession = (state) => {
+  return state.auth.session
 };
 const selectAuthLoading = (state) => {
   return state.auth.loading
@@ -13,7 +13,7 @@ const selectAuthError = (state) => {
 
 const authLogin = {
   selectAuth,
-  selectUser,
+  selectAuthSession,
   selectAuthLoading,
   selectAuthError,
 }

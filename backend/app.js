@@ -12,7 +12,8 @@ const queryRouter = require("./src/routes/query");
 
 app.use(express.json());
 app.use("/auth", authRouter);
-app.use("/api", queryRouter);
-app.use("/api", require("./src/routes/logs"));
+app.use("/auth", require("./src/routes/logs"));
+app.use("/query", queryRouter);
+app.use("/query", require("./src/routes/logs"));
 
 module.exports = app;

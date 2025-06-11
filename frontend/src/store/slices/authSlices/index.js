@@ -3,9 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
+    session: null,
     loading: false,
-    token: null,
     error: null,
   },
   reducers: {
@@ -14,7 +13,7 @@ const authSlice = createSlice({
       state.error = null;
     },
     loginSuccess: (state, action) => {
-      state.user = action.payload;
+      state.session = action.payload;
       state.loading = false;
     },
     loginFailure: (state, action) => {
