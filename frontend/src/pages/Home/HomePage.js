@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import fetchDataConstants from '../store/constants';
-import selectFetch from '../store/selectors';
+
+import fetchDataConstants from '../../store/constants/fetchDataConstants';
+import selectFetch from '../../store/selectors/fetchData';
 
 function HomePage() {
   const dispatch = useDispatch();

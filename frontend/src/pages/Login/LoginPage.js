@@ -1,40 +1,44 @@
-// src/pages/Login/LoginPage.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./login.module.css"; // nếu dùng css
+import { useDispatch, useSelector } from 'react-redux';
+
+import authConstants from '../../store/constants/authConstants';
+import authLogin from '../../store/selectors/authSelectors';
 
 function LoginPage() {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const data = useSelector(authLogin.selectAuth)
+  const loading = useSelector(authLogin.selectAuthLoading);
+  const error = useSelector(authLogin.selectAuthLoading);
+  const LoginSuccess = useSelector(authLogin.selectUser);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem("token", data.token);
-        navigate("/dashboard"); // đổi đường dẫn sau login thành công
-      } else {
-        setError(data.error || "Login failed");
+    dispatch({ 
+      type: authConstants.LOGIN_REQUEST,
+      payload: { 
+        username: username,
+        password: password,
       }
-    } catch (err) {
-      setError("Error connecting to server");
-    }
+    });
   };
+
+  useEffect(() => {
+    if (!!LoginSuccess) {
+      localStorage.setItem("token", data.token);
+      navigate("/");
+    }
+  }, [LoginSuccess, data, navigate])
 
   return (
     <div className="login-container">
       <h2>Login</h2>
       {error && <div className="error">{error}</div>}
+      {loading && <p>Loading...</p>}
       <form onSubmit={handleLogin}>
         <input
           type="text"

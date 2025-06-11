@@ -1,8 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import fetchDataReducers from '../slices/fetchDataSlices';
+import fetchDataSlices from '../slices/fetchDataSlices';
+import authSlice from '../slices/authSlices'
 
 const rootReducer = combineReducers({
-  fetchData: fetchDataReducers,
+  fetchData: fetchDataSlices,
+  auth:  authSlice,
 });
 
 export default rootReducer;

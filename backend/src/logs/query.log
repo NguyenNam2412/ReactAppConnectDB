@@ -6,3 +6,4 @@
 [2025-06-07T06:53:29.481Z] [ERROR] User: test, Table: MOCKED_TABLE, Error: oracledb is not defined, Conditions: {"SERIAL_NUMBER":"A123456"}
 [2025-06-07T07:06:30.900Z] [INFO] User: test, Table: MOCKED_TABLE, Conditions: {"SERIAL_NUMBER":"A123456"}, Count: 1
 [2025-06-10T15:24:16.819Z] [INFO] User: test, Table: MOCKED_TABLE, Conditions: {"SERIAL_NUMBER":"A123456"}, Count: 1
+[2025-06-10T16:23:41.737Z] [INFO] User: test, Table: MOCKED_TABLE, Conditions: {"SERIAL_NUMBER":"A123456"}, Count: 1

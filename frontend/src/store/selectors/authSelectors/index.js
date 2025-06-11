@@ -1,5 +1,22 @@
-// src/store/selectors/authSelector.js
-export const selectAuth = (state) => state.auth;
-export const selectUser = (state) => state.auth.user;
-export const selectAuthLoading = (state) => state.auth.loading;
-export const selectAuthError = (state) => state.auth.error;
+const selectAuth = (state) => {
+  return state.auth
+};
+const selectUser = (state) => {
+  return state.auth.user
+};
+const selectAuthLoading = (state) => {
+  return state.auth.loading
+};
+const selectAuthError = (state) => {
+  return state.auth.error
+};
+
+const authLogin = {
+  selectAuth,
+  selectUser,
+  selectAuthLoading,
+  selectAuthError,
+}
+
+export default authLogin;
+

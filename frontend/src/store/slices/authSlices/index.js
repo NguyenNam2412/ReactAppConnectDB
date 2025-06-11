@@ -1,4 +1,3 @@
-// src/store/slices/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
@@ -6,6 +5,7 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     loading: false,
+    token: null,
     error: null,
   },
   reducers: {
@@ -19,10 +19,9 @@ const authSlice = createSlice({
     },
     loginFailure: (state, action) => {
       state.loading = false;
-      state.error = action.payload;
+      state.error = action.payload || 'login error';
     },
   },
 });
 
-export const { loginRequest, loginSuccess, loginFailure } = authSlice.actions;
 export default authSlice.reducer;

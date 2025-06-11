@@ -1,6 +1,6 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
-import fetchTableData from '../../../api';
-import fetchDataConstants from '../../constants/fetchData';
+import { fetchTableData } from '../../../api';
+import fetchDataConstants from '../../constants/fetchDataConstants';
 
 function* fetchOracleData(action) {
   try {

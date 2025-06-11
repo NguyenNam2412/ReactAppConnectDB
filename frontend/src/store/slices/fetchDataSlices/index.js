@@ -1,14 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  loading: false,
-  error: null,
-  data: [],
-};
-
 const fetchDataSlices = createSlice({
   name: 'fetchData',
-  initialState,
+  initialState: {
+    loading: false,
+    error: null,
+    data: [],
+  },
   reducers: {
     Start: (state) => {
       state.loading = true;
@@ -20,7 +18,7 @@ const fetchDataSlices = createSlice({
     },
     Failure: (state, action) =>{
       state.loading = false;
-      state.error = action.payload || 'error';
+      state.error = action.payload || 'fetch data error';
     },
   },
 });

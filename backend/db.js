@@ -5,9 +5,11 @@ require("dotenv").config({
 });
 
 if (process.env.NODE_ENV !== "test") {
-  oracledb.initOracleClient({
-    libDir: "C:\\OracleSql\\instantclient\\instantclient_23_8",
-  });
+  //PATH env oracle for nodejs
+  // oracledb.initOracleClient({
+  //   libDir: "C:\\OracleSql\\instantclient\\instantclient_23_8",
+  // });
+  oracledb.initOracleClient({ libDir: 'C:\\oracle\\instantclient_23_8' });
 }
 
 const initConnection = async () => {
