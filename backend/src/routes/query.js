@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const oracledb = require("oracledb");
 
-const initConnection = require("../../db");
+const initConnection = require("../db");
 const { buildQuery } = require("../services/queryServices");
 const {
   validateTable,
@@ -10,7 +10,7 @@ const {
   logQuery,
 } = require("../middleware/queryMiddleware");
 const { authenticateToken } = require("../middleware/authMiddleware");
-const logger = require("../utils/logger");
+const { queryLog, errorLog } = require("../utils/logger");
 
 // router.post("/:table", verifyToken, requireRole("admin"), async (req, res) => {
 //   // chỉ admin mới vào đây
@@ -49,9 +49,19 @@ router.post(
         outFormat: oracledb.OUT_FORMAT_OBJECT,
       });
 
-      await conn.close();
+      if (result.error) {
+        return res.status(500).json({ success: false, error: result.error });
+      }
 
-      logger.info(
+      if (conn) {
+        try {
+          await conn.close();
+        } catch (err) {
+          console.error("Failed to close Oracle connection:", err.message);
+        }
+      }
+
+      queryLog.info(
         `User: ${
           req.user?.username || "unknown"
         }, Table: ${table}, Conditions: ${JSON.stringify(query)}, Count: ${
@@ -71,7 +81,7 @@ router.post(
     } catch (err) {
       console.error("Query error:", err);
 
-      logger.error(
+      errorLog.error(
         `User: ${req.user?.username || "unknown"}, Table: ${table}, Error: ${
           err.message
         }, Conditions: ${JSON.stringify(query)}`

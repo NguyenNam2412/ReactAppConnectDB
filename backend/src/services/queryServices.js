@@ -92,32 +92,6 @@ const buildQuery = (table, query) => {
 
   const limit = parseInt(query.limit) || 10;
   const offset = parseInt(query.offset) || 0;
-  // const useLimit = !isNaN(limit);
-
-  // let sql;
-  // if (useLimit) {
-  //   const limitBind = `b${bindIndex++}`;
-  //   const offsetBind = `b${bindIndex++}`;
-  //   sql = `
-  //     SELECT * FROM (
-  //       SELECT a.*, ROWNUM rnum FROM (
-  //         SELECT * FROM ${table}
-  //         ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
-  //         ${orderClause}
-  //       ) a
-  //       WHERE ROWNUM <= :${limitBind}
-  //     )
-  //     WHERE rnum > :${offsetBind}
-  //   `;
-  //   binds[limitBind] = { val: offset + limit, type: oracledb.NUMBER, dir: oracledb.BIND_IN };
-  //   binds[offsetBind] = { val: offset, type: oracledb.NUMBER, dir: oracledb.BIND_IN };
-  // } else {
-  //   sql = `
-  //     SELECT * FROM ${table}
-  //     ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
-  //     ${orderClause}
-  //   `;
-  // }
 
   const sql = `
     SELECT *
