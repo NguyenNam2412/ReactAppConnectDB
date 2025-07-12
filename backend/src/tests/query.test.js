@@ -11,10 +11,10 @@ const token = jwt.sign(
   process.env.SECRET_KEY
 );
 
-describe("POST /api/:table (mocked)", () => {
+describe("POST /query/:table (mocked)", () => {
   it("should return mocked data", async () => {
     const res = await request(app)
-      .post("/api/MOCKED_TABLE")
+      .post("/query/MOCKED_TABLE")
       .set("Authorization", `Bearer ${token}`)
       .send({ SERIAL_NUMBER: "A123456" });
 
